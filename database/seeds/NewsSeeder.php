@@ -1,7 +1,7 @@
 <?php
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
-
+use Faker\Factory as Faker;
 class NewsSeeder extends Seeder
 {
     /**
@@ -11,7 +11,7 @@ class NewsSeeder extends Seeder
      */
     public function run()
     {
-        DB::insert('INSERT INTO `news` (`name`, `text`, `img`) VALUES (?,?,?)', [
+       /* DB::insert('INSERT INTO `news` (`name`, `text`, `img`) VALUES (?,?,?)', [
         	'Blog post',
 	        '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
 				Et exercitationem labore magnam modi molestiae optio quasi 
@@ -33,6 +33,25 @@ class NewsSeeder extends Seeder
 				    'img' => 'img3.jpg'
 			    ]
 		    ]
-	    );
+	    );*/
+
+        /*DB::table('users')->insert([
+            'name' => str_random(10),
+            'email' => str_random(10).'@gmail.com',
+            'password' => bcrypt('secret'),
+        ]);*/
+
+        $faker = Faker::create();
+        for($i = 0; $i < 50; $i++){
+            DB::table('news')->insert([
+                'name' => $faker->word,
+                'text' => $faker->text,
+                'img' => $faker->imageUrl(),
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
+                'alias' => $faker->word,
+            ]);
+        }
+
     }
 }
