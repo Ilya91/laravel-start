@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class News extends Model
 {
+
+    use SoftDeletes;
+
     protected $table = 'news';
     protected $primaryKey = 'id';
     public $incrementing = true;
