@@ -18,4 +18,24 @@ class News extends Model
 
     protected $dates = ['deleted_at'];
 
+    protected $casts = [
+        'name' => 'boolean'
+    ];
+
+    public function news(){
+        return $this->hasOne('App\Category');
+    }
+
+    public function user(){
+        return $this->belongsTo('App\User');
+    }
+
+    public function getTextAttribute($value){
+        return 'Hell world - ' . $value;
+    }
+
+    public function setNameAttribute($value){
+
+        $this->attributes['name'] = ' Title ' . $value;
+    }
 }
