@@ -33,20 +33,25 @@ class AdminUpdatePostController extends Controller
     	$data = $request->except('_token');
     	
     	$article = News::find($data['id']);
-    	
 
-			$article->name = $data['name'];
-	    	$article->img = $data['img'];
-	    	$article->text = $data['text'];
-	    	
-	    	$res = $user->news()->save($article);
-	        
-	       
-			return redirect()->back()->with('message','Материал обновлен');
 
-    	
+        if ($request->user()->can('update', $article)) {
+            $article->name = $data['name'];
+            $article->img = $data['img'];
+            $article->text = $data['text'];
+            $res = $user->news()->save($article);
+            return redirect()->back()->with('message','Материал обновлен');
+        }
 
-    	
-       
+       /* if (Gate::allows('update', $article)) {
+            $article->name = $data['name'];
+            $article->img = $data['img'];
+            $article->text = $data['text'];
+
+            $res = $user->news()->save($article);
+
+            return redirect()->back()->with('message','Материал обновлен');
+        }*/
+        return redirect()->back()->with('message', 'У вас нет прав');
 	}
 }
