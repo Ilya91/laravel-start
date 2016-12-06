@@ -81,7 +81,8 @@ class ContactsController extends Controller
 
     public function show(Request $request){
 
-        $res = $request->session()->get('key', 'default');
+        //$res = $request->session()->get('key', 'default');
+        $res = $request->session()->all();
         dump($res);
         $array = array('title'=>'Laravel Project::Contacts');
         return view('default.contacts', $array);
