@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ContactsRequest;
 use Illuminate\Http\Request;
 
 class ContactsController extends Controller
@@ -14,7 +15,8 @@ class ContactsController extends Controller
         $this->request = $request;
     }*/
 
-    public function show(Request $request, $id = FALSE){
+    public function store(/*ContactsRequest*/ Request $request, $id = FALSE){
+
         $array = array('title'=>'Laravel Project::Contacts');
         /*
                 echo '<h1 style="margin-top: 100px">'. $request->input('name', 'Default').'</h1>';
@@ -43,20 +45,45 @@ class ContactsController extends Controller
             ];
             $this->validate($request, $rules);*/
 
-            $messages = [];
+
+
+            $messages = [
+                'name.required' => 'Поле имя обязательно к заполнению',
+                'email.required' => 'Поле почта обязательно к заполнению',
+            ];
             $validator = \Validator::make($request->all(), [
                 'name' => 'required|max:10',
-                'email' => 'required|email|unique:users,email',
+                'email' => 'required|email|sometimes',
                 'site' => 'url'
             ], $messages);
 
+
+            $validator->after(function ($validator){
+                $validator->errors()->add('name', 'Дополнительное сообщение');
+            });
             if($validator->fails()){
                 return redirect()->route('contacts')->withErrors($validator)->exceptInput();
+
+                //$messages = $validator->errors();
+                //dump($messages->all());
             }
+
+
+
+
+
             //$request->flash();
             //$request->session()->put('error', 'Hi');
             //dump($request->all());
         }
+        return view('default.contacts', $array);
+    }
+
+    public function show(Request $request){
+
+        $res = $request->session()->get('key', 'default');
+        dump($res);
+        $array = array('title'=>'Laravel Project::Contacts');
         return view('default.contacts', $array);
     }
 }
