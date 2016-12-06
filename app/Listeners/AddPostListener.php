@@ -26,6 +26,8 @@ class AddPostListener
      */
     public function handle(onAddPostEvent $event)
     {
-        //
+        //$event->user_name;
+        //$event->post_name;
+        \Log::info('Post had saved in database', $event->user_name . ' | ' . $event->post_name);
     }
 }
